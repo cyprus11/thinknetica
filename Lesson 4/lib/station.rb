@@ -18,8 +18,8 @@ class Station
     @trains << train
   end
 
-  def trains_by_type
-    "Пассажирских: #{@trains.count(&:is_passenger?)}. Грузовых: #{@trains.count(&:is_cargo?)}"
+  def trains_by_type(type)
+    @trains.select { |train| train.type == type }
   end
 
   def send_train(train)
