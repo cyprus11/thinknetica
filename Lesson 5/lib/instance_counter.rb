@@ -3,14 +3,16 @@ module InstanceCounter
     base.class_eval do
       extend ClassMethods
       include InstanceMethods
-
-      class_variable_set("@@#{name.downcase}_instances", 0)
     end
   end
 
   module ClassMethods
     def instances
-      class_variable_get("@@#{name.downcase}_instances")
+      unless class_variable_defined?("@@#{name.downcase}_instances")
+        0
+      else
+        class_variable_get("@@#{name.downcase}_instances")
+      end
     end
   end
 
