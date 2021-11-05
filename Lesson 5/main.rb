@@ -12,15 +12,15 @@ require_relative 'lib/console_helper'
 require_relative 'lib/railway'
 
 
-# railway = Railway.new
+railway = Railway.new
 
-# loop do
-#   ConsoleHelper.menu
+loop do
+  ConsoleHelper.menu
 
-#   user_answer = ConsoleHelper.user_answer
-#   break if user_answer == '0' || user_answer == 'стоп'
+  user_answer = ConsoleHelper.user_answer
+  break if user_answer == '0' || user_answer == 'стоп'
 
-#   sub_menu = ConsoleHelper.menu_events(user_answer, {trains: railway.trains, stations: railway.stations, routes: railway.routes})
+  sub_menu = ConsoleHelper.menu_events(user_answer, {trains: railway.trains, stations: railway.stations, routes: railway.routes})
 
-#   railway.action_with_railway(user_answer, sub_menu)
-# end
+  railway.action_with_railway(user_answer, sub_menu)
+end
