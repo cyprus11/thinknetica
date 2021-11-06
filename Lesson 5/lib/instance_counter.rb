@@ -7,12 +7,10 @@ module InstanceCounter
   end
 
   module ClassMethods
+    attr_writer :instances
+
     def instances
-      unless class_variable_defined?("@@#{name.downcase}_instances")
-        0
-      else
-        class_variable_get("@@#{name.downcase}_instances")
-      end
+      @instances ||= 0
     end
   end
 
@@ -20,12 +18,7 @@ module InstanceCounter
     private
 
     def register_instance
-      self.create_class_variable unless self.class.class_variable_defined?("@@#{self.class.name.downcase}_instances")
-      self.class.class_variable_set("@@#{self.class.name.downcase}_instances", self.class.class_variable_get("@@#{self.class.name.downcase}_instances") + 1 )
-    end
-
-    def create_class_variable
-      self.class.class_variable_set("@@#{self.class.name.downcase}_instances", 0)
+      self.class.instances += 1
     end
   end
 end
