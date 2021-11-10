@@ -9,7 +9,7 @@
 class Station
   attr_reader :name, :trains
 
-  STATION_NAME = /\w/i
+  STATION_NAME = /\w+/i
 
   include InstanceCounter
 
