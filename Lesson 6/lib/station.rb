@@ -49,6 +49,7 @@ class Station
   private
 
   def validate!
-    raise "Station name is incorrect." if name != STATION_NAME
+    raise "Too short name for station. It should be min 3." if name.length < 3
+    raise "Station name is incorrect." if name !~ STATION_NAME
   end
 end
