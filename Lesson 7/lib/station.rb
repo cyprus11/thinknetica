@@ -46,7 +46,11 @@ class Station
     false
   end
 
+<<<<<<< HEAD
   def action_with_trains(&block)
+=======
+  def method_with_block(&block)
+>>>>>>> f1ba4c8e23c710b2e82266258ffd92c6f9854bf0
     @trains.each { |train| yield(train) }
   end
 
