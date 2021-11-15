@@ -175,12 +175,8 @@ class ConsoleHelper
     puts 'Выберите станцию:'
     return unless print_stations(params[:stations])
     station = user_answer
-<<<<<<< HEAD
     station = params[:stations][station.to_i - 1]
     station.action_with_trains { |train| puts "#{station.trains.index(train) + 1}. #{train.number}" }
-=======
-    print_trains(params[:stations][station.to_i - 1].trains)
->>>>>>> f1ba4c8e23c710b2e82266258ffd92c6f9854bf0
   end
 
   def self.wagons_of_train(params)
