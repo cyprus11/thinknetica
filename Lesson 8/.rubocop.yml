@@ -1,0 +1,11 @@
+Style/Documentation:
+  Enabled: false
+Style/ClassVars:
+  Enabled: false
+Metrics/ModuleLength:
+  Enabled: false
+Metrics/MethodLength:
+  Max: 15
+
+AllCops:
+  TargetRubyVersion: 2.7
