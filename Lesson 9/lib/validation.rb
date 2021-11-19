@@ -9,27 +9,25 @@ module Validation
   module ClassMethods
     def validate(attr_name, type, options = nil)
       raise RuntimeError.new("This type of validation don't exist.") unless [:presence, :format, :type].include?(type)
-      method_name = "#{attr_name}_#{type}_valid?".to_sym
-      define_method(method_name) do
-        var_name = "@#{attr_name}".to_sym
-        if type == :presence
-          return "This variable @#{attr_name} should not be nil." if instance_variable_get(var_name).nil?
-        elsif type == :format
-          return "This variable @#{attr_name} does not not match format." if instance_variable_get(var_name) !~ options
-        elsif type == :type
-          return "This variable @#{attr_name} has wrong type." if !instance_variable_get(var_name).is_a?(options)
-        end
-        false
-      end
+      validate_hash = { validation_type: type, var_name: attr_name, params: options }
+      validation_data = "@validation_array".to_sym
+      instance_variable_set(validation_data, (instance_variable_get(validation_data) || []) << validate_hash)
     end
   end
 
   module InstanceMethods
     def validate!
-      valid_methods = methods.select { |method| method.to_s.include?("_valid?") }
+      validation_data = "@validation_array".to_sym
+      self.class.instance_variable_get(validation_data).each do |validation|
+        result = case validation[:validation_type]
+          when :presence
+            send(:validate_presence, validation[:var_name])
+          when :format
+            send(:validate_format, validation[:var_name], validation[:params])
+          when :type
+            send(:validate_type, validation[:var_name], validation[:params])
+          end
 
-      valid_methods.each do |method|
-        result = send(method)
         raise RuntimeError.new(result) if result
       end
     end
@@ -38,6 +36,21 @@ module Validation
       validate!
       true
     rescue RuntimeError
+      false
+    end
+
+    def validate_presence(var_name)
+      return "This variable @#{var_name} should not be nil." if instance_variable_get("@#{var_name}").nil?
+      false
+    end
+
+    def validate_format(var_name, format)
+      return "This variable @#{var_name} does not not match format." if instance_variable_get("@#{var_name}") !~ format
+      false
+    end
+
+    def validate_type(var_name, type)
+      return "This variable @#{var_name} has wrong type." if !instance_variable_get("@#{var_name}").is_a?(type)
       false
     end
   end
